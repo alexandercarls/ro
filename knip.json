@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "app/routes.ts",
+    "server/app.ts"
+  ],
+  "remix": true,
+  "project": ["**/*.{ts,tsx}"],
+  "ignore": ["app/components/**/*", "app/schema.ts"],
+  "ignoreDependencies": ["@babel/preset-typescript", "babel-plugin-react-compiler"]
+}

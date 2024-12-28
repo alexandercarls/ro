@@ -1,0 +1,335 @@
+{
+  "id": "77f64a49-5d9f-46bb-b977-cd9b1cc69d65",
+  "prevId": "38b7e8ea-a798-49a7-ac24-c2cf0c9d8a5b",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.parcoursEdges": {
+      "name": "parcoursEdges",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "parcoursId": {
+          "name": "parcoursId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sourceNodeId": {
+          "name": "sourceNodeId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "targetNodeId": {
+          "name": "targetNodeId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "parcoursEdges_parcoursId_parcours_id_fk": {
+          "name": "parcoursEdges_parcoursId_parcours_id_fk",
+          "tableFrom": "parcoursEdges",
+          "tableTo": "parcours",
+          "columnsFrom": [
+            "parcoursId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "parcoursEdges_sourceNodeId_parcoursNodes_id_fk": {
+          "name": "parcoursEdges_sourceNodeId_parcoursNodes_id_fk",
+          "tableFrom": "parcoursEdges",
+          "tableTo": "parcoursNodes",
+          "columnsFrom": [
+            "sourceNodeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "parcoursEdges_targetNodeId_parcoursNodes_id_fk": {
+          "name": "parcoursEdges_targetNodeId_parcoursNodes_id_fk",
+          "tableFrom": "parcoursEdges",
+          "tableTo": "parcoursNodes",
+          "columnsFrom": [
+            "targetNodeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.parcoursNodes": {
+      "name": "parcoursNodes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "parcoursId": {
+          "name": "parcoursId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "signVdhId": {
+          "name": "signVdhId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "positionX": {
+          "name": "positionX",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "positionY": {
+          "name": "positionY",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "parcoursNodes_parcoursId_parcours_id_fk": {
+          "name": "parcoursNodes_parcoursId_parcours_id_fk",
+          "tableFrom": "parcoursNodes",
+          "tableTo": "parcours",
+          "columnsFrom": [
+            "parcoursId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "parcoursNodes_signVdhId_signsVdh_id_fk": {
+          "name": "parcoursNodes_signVdhId_signsVdh_id_fk",
+          "tableFrom": "parcoursNodes",
+          "tableTo": "signsVdh",
+          "columnsFrom": [
+            "signVdhId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.parcours": {
+      "name": "parcours",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "ownerId": {
+          "name": "ownerId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "parcours_ownerId_users_id_fk": {
+          "name": "parcours_ownerId_users_id_fk",
+          "tableFrom": "parcours",
+          "tableTo": "users",
+          "columnsFrom": [
+            "ownerId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.signsVdh": {
+      "name": "signsVdh",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nr": {
+          "name": "nr",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isSenior": {
+          "name": "isSenior",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "inFront": {
+          "name": "inFront",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "signsVdh_nr_unique": {
+          "name": "signsVdh_nr_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "nr"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
