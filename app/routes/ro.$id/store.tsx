@@ -227,6 +227,11 @@ export const ParcoursProvider: FC<{
           data: { sign, rotation: 0 }
         }
 
+        z.mutate.parcours.update({
+          id: get().parcoursId!,
+          updatedAt: Date.now()
+        })
+
         set({ nodes: [newNode, ...get().nodes] })
       },
       parcoursId: props.parcoursId,
