@@ -179,20 +179,18 @@ const RO = (props: { onReady: () => void; parcoursId: string }) => {
       return
     }
 
-    const remoteNodes: Array<AppNode> =
-      parcour.nodes.map((node) => ({
-        id: node.id,
-        type: "ro-sign",
-        data: { sign: node.sign!, rotation: node.rotation },
-        position: { x: node.positionX, y: node.positionY }
-      })) 
+    const remoteNodes: Array<AppNode> = parcour.nodes.map((node) => ({
+      id: node.id,
+      type: "ro-sign",
+      data: { sign: node.sign!, rotation: node.rotation },
+      position: { x: node.positionX, y: node.positionY }
+    }))
 
-    const remoteEdges: Array<AppEdge> =
-      parcour.edges.map((edge) => ({
-        id: edge.id,
-        source: edge.sourceNodeId,
-        target: edge.targetNodeId
-      })) 
+    const remoteEdges: Array<AppEdge> = parcour.edges.map((edge) => ({
+      id: edge.id,
+      source: edge.sourceNodeId,
+      target: edge.targetNodeId
+    }))
 
     setRemoteNodesAndEdges(parcour.id, remoteNodes, remoteEdges)
   }, [props.parcoursId, parcour, setRemoteNodesAndEdges])

@@ -31,7 +31,11 @@ export type AppState = {
   onConnect: OnConnect
   setDraggedSign: (nr: string) => void
   addNode: (nr: string, position: XYPosition) => void
-  setRemoteNodesAndEdges: (parcoursId: string, nodes: Array<AppNode>, edges: Array<AppEdge>) => void
+  setRemoteNodesAndEdges: (
+    parcoursId: string,
+    nodes: Array<AppNode>,
+    edges: Array<AppEdge>
+  ) => void
   parcoursId: string
   setParcoursId: (id: string) => void
   parcourInitialised: boolean
@@ -203,14 +207,16 @@ export const ParcoursProvider: FC<{
         const sign = z.query.signsVdh.where("nr", "=", nr).one().run()!
 
         const position = screenToFlowPosition(screenPosition)
+        console.log("addNode", position)
+        console.log("screen", screenPosition)
 
         const id = crypto.randomUUID()
         z.mutate.parcoursNodes.insert({
           id,
           parcoursId: get().parcoursId!,
           signVdhId: sign.id,
-          positionX: screenPosition.x,
-          positionY: screenPosition.y,
+          positionX: position.x,
+          positionY: position.y,
           rotation: 0
         })
 

@@ -15,9 +15,7 @@ export default function Parkour({}: Route.ComponentProps) {
   return (
     <div>
       <h1>RO Parcours</h1>
-      <Button onClick={() => createParcour(z)}>
-        Create
-      </Button>
+      <Button onClick={() => createParcour(z)}>Create</Button>
       <ul className="divide-y divide-gray-100">
         {parcours.map((parcours) => (
           <li key={parcours.id} className="flex justify-between gap-x-6 py-5">

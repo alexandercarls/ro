@@ -35,9 +35,7 @@ export const LeftSidebar: FC<{ onReady: () => void }> = (props) => {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={() => createParcour(z)}
-            >
+            <SidebarMenuButton onClick={() => createParcour(z)}>
               <Plus />
               <span>Neuer Parcours</span>
             </SidebarMenuButton>
