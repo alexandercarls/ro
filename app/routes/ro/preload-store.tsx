@@ -9,22 +9,34 @@ import { preload } from "../ro.$id/preload"
 type PreloadState = {
   isReady: boolean
   setReady: (ready: boolean) => void
+  callCount: number
 }
 
 const StoreContext = React.createContext<StoreApi<PreloadState> | null>(null)
 
-export const PreloadProvider = ({ children }: { children: ReactNode }) => {
+export const PreloadProvider = ({
+  children,
+  requiredCalls
+}: {
+  children: ReactNode
+  requiredCalls: number
+}) => {
   const storeRef = useRef<StoreApi<PreloadState>>(null)
   const z = useZ()
 
   if (!storeRef.current) {
     storeRef.current = createStore((set, get) => ({
       isReady: false,
+      callCount: 0,
       setReady: (ready) => {
-        if (!get().isReady) {
-          console.log("preloading form zstore")
-          preload(z)
-          set({ isReady: ready })
+        const currentState = get()
+        if (!currentState.isReady) {
+          set({ callCount: currentState.callCount + 1 })
+          if (currentState.callCount + 1 === requiredCalls) {
+            console.log("preloading")
+            preload(z)
+            set({ isReady: ready })
+          }
         }
       }
     }))

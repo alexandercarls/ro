@@ -4,7 +4,8 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
+  useLocation,
 } from "react-router"
 import type { Route } from "./+types/root"
 import stylesheet from "./app.css?url"
@@ -14,6 +15,7 @@ import { ZeroProvider } from "@rocicorp/zero/react"
 import posthog from "posthog-js"
 import { useEffect } from "react"
 import { create } from "zustand"
+import { PreloadProvider } from "./routes/ro/preload-store"
 
 export const links: Route.LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }]
 
@@ -35,13 +37,9 @@ export function Layout(props: { children: React.ReactNode }) {
   )
 }
 
-export const clientLoader = () => {
-  return null
-}
-
 export function HydrateFallback() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen absolute inset-0 bg-white">
       <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4" />
       <p className="text-lg">Loading your rally obedience course...</p>
       <p className="text-sm text-gray-600">Get ready to explore!</p>
@@ -83,6 +81,8 @@ const useZeroStore = create<ZeroStore>((set) => ({
 // eslint-disable-next-line no-empty-pattern
 export default function App({}: Route.ComponentProps) {
   const { z, createZero } = useZeroStore()
+  const location = useLocation()
+  console.log("location", location.pathname)
 
   useEffect(() => {
     // Initialize with guest user - you can change this as needed
@@ -94,7 +94,9 @@ export default function App({}: Route.ComponentProps) {
 
   return (
     <ZeroProvider zero={z}>
-      <Outlet />
+      <PreloadProvider requiredCalls={location.pathname === "/ro/" ? 1 : 3}>
+        <Outlet />
+      </PreloadProvider>
       {import.meta.env.PROD && <PosthogInit />}
     </ZeroProvider>
   )
