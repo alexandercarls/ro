@@ -5,7 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLocation,
+  useMatch
 } from "react-router"
 import type { Route } from "./+types/root"
 import stylesheet from "./app.css?url"
@@ -39,7 +39,7 @@ export function Layout(props: { children: React.ReactNode }) {
 
 export function HydrateFallback() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen absolute inset-0 bg-white">
+    <div className="flex flex-col items-center justify-center min-h-screen absolute inset-0 z-50 bg-white">
       <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4" />
       <p className="text-lg">Loading your rally obedience course...</p>
       <p className="text-sm text-gray-600">Get ready to explore!</p>
@@ -81,8 +81,7 @@ const useZeroStore = create<ZeroStore>((set) => ({
 // eslint-disable-next-line no-empty-pattern
 export default function App({}: Route.ComponentProps) {
   const { z, createZero } = useZeroStore()
-  const location = useLocation()
-  console.log("location", location.pathname)
+  const matchParcoursDetail = useMatch("/ro/:id")
 
   useEffect(() => {
     // Initialize with guest user - you can change this as needed
@@ -94,7 +93,7 @@ export default function App({}: Route.ComponentProps) {
 
   return (
     <ZeroProvider zero={z}>
-      <PreloadProvider requiredCalls={location.pathname === "/ro/" ? 1 : 3}>
+      <PreloadProvider requiredCalls={matchParcoursDetail ? 3 : 1}>
         <Outlet />
       </PreloadProvider>
       {import.meta.env.PROD && <PosthogInit />}

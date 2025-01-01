@@ -7,14 +7,12 @@ import { HydrateFallback } from "~/root"
 export default function Parkour() {
   const isReady = usePreloadStore((s) => s.isReady)
   return (
-    <>
-      <div className="flex flex-col h-screen relative">
-        <MultiSidebarProvider>
-          <LeftSidebar />
-          <Outlet />
-        </MultiSidebarProvider>
-      </div>
+    <div className="flex flex-col h-screen relative">
+      <MultiSidebarProvider>
+        <LeftSidebar />
+        <Outlet />
+      </MultiSidebarProvider>
       {!isReady && <HydrateFallback />}
-    </>
+    </div>
   )
 }
