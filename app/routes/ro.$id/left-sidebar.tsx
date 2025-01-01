@@ -19,16 +19,18 @@ import { intlFormatDistance } from "date-fns/intlFormatDistance"
 import { Plus, Lock } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip"
 import { createParcour } from "./mutators"
+import { usePreloadStore } from "../ro/preload-store"
 
-export const LeftSidebar: FC<{ onReady: () => void }> = (props) => {
+export const LeftSidebar: FC = () => {
   const z = useZ()
   const [parcours, { type }] = useQuery(z.query.parcours.orderBy("updatedAt", "desc"))
+  const setReady = usePreloadStore((s) => s.setReady)
 
   useEffect(() => {
     if (type === "complete") {
-      props.onReady()
+      setReady(true)
     }
-  }, [type, props])
+  }, [setReady, type])
 
   return (
     <Sidebar side="left" variant="inset">
@@ -49,7 +51,7 @@ export const LeftSidebar: FC<{ onReady: () => void }> = (props) => {
           <SidebarGroupContent>
             {parcours.map((parcours) => (
               <NavLink
-                to={`../${parcours.id}`}
+                to={parcours.id}
                 key={parcours.id}
                 className="flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground [&[aria-current='page']]:bg-sidebar-selected-background [&[aria-current='page']]:text-sidebar-selected-foreground"
               >

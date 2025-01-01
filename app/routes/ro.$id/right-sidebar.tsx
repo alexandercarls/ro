@@ -12,9 +12,11 @@ import {
 import { useQuery } from "@rocicorp/zero/react"
 import { useZ } from "~/hooks/use-z"
 import { escapeLike } from "@rocicorp/zero"
+import { usePreloadStore } from "../ro/preload-store"
 
-export const RightSidebar: FC<{ onReady: () => void }> = (props) => {
+export const RightSidebar: FC = () => {
   const z = useZ()
+  const setReady = usePreloadStore((s) => s.setReady)
   const [filter, setFilter] = useState<string[]>([])
   const [directionFilter, setDirectionFilter] = useState<string>()
   const [typeFilter, setTypeFilter] = useState<string[]>([])
@@ -59,9 +61,9 @@ export const RightSidebar: FC<{ onReady: () => void }> = (props) => {
 
   useEffect(() => {
     if (type === "complete") {
-      props.onReady()
+      setReady(true)
     }
-  }, [type, props])
+  }, [type, setReady])
 
   return (
     <Sidebar side="right" variant="inset">

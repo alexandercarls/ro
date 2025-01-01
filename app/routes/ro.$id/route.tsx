@@ -9,7 +9,7 @@ import {
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 import { useShallow } from "zustand/react/shallow"
-import { Fragment, useCallback, useEffect, useState } from "react"
+import { Fragment, useCallback, useEffect } from "react"
 import { RoSignNode } from "./nodes/RoSignNode"
 import { ConnectionLine } from "./connection-line"
 import {
@@ -22,19 +22,14 @@ import {
 import { Button } from "~/components/ui/button"
 import { Redo2, Undo2 } from "lucide-react"
 import { RightSidebar } from "./right-sidebar"
-import { LeftSidebar } from "./left-sidebar"
 import { Separator } from "@radix-ui/react-separator"
 import { RoSignGroupNode, type RoSignGroupNodeProps } from "./nodes/RoSignGroupNode"
 import type { Route } from "../ro.$id/+types/route"
 import { useZ } from "~/hooks/use-z"
 import { useQuery } from "@rocicorp/zero/react"
-import {
-  MultiSidebarProvider,
-  SidebarInset,
-  SidebarTrigger
-} from "~/components/ui/multi-sidebar"
-import { preload } from "./preload"
+import { SidebarInset, SidebarTrigger } from "~/components/ui/multi-sidebar"
 import { NodeExtentBackground } from "./background"
+import { usePreloadStore } from "../ro/preload-store"
 
 const selector = (state: AppState) => ({
   nodes: state.nodes,
@@ -69,39 +64,24 @@ const nodeTypes: Record<
 const proOptions: ProOptions = { hideAttribution: true }
 
 export default function ROWrapper({ params }: Route.ComponentProps) {
-  const z = useZ()
-
-  // TODO: Not too sure if I only need to trigger preload when all `useQuery`s are ready
-  const [roReady, setRoReady] = useState(false)
-  const [leftSidebarReady, setLeftSidebarReady] = useState(false)
-  const [rightSidebarReady, setRightSidebarReady] = useState(false)
-  useEffect(() => {
-    if (roReady && leftSidebarReady && rightSidebarReady) {
-      preload(z)
-    }
-  }, [roReady, leftSidebarReady, rightSidebarReady, z])
-
   return (
     <ReactFlowProvider>
       <ParcoursProvider nodes={[]} edges={[]} parcoursId={params.id}>
-        <MultiSidebarProvider>
-          <LeftSidebar onReady={() => setLeftSidebarReady(true)} />
-          <SidebarInset>
-            <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
-              <SidebarTrigger className="-ml-1" side="left" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <SidebarTrigger className="ml-auto" side="right" />
-            </header>
-            <RO parcoursId={params.id} onReady={() => setRoReady(true)} />
-          </SidebarInset>
-          <RightSidebar onReady={() => setRightSidebarReady(true)} />
-        </MultiSidebarProvider>
+        <SidebarInset>
+          <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" side="left" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <SidebarTrigger className="ml-auto" side="right" />
+          </header>
+          <RO parcoursId={params.id} />
+        </SidebarInset>
+        <RightSidebar />
       </ParcoursProvider>
     </ReactFlowProvider>
   )
 }
 
-const RO = (props: { onReady: () => void; parcoursId: string }) => {
+const RO = (props: { parcoursId: string }) => {
   const {
     nodes,
     edges,
@@ -115,6 +95,7 @@ const RO = (props: { onReady: () => void; parcoursId: string }) => {
     setRemoteNodesAndEdges,
     setParcoursId
   } = useParcoursStore(useShallow(selector))
+  const setReady = usePreloadStore((s) => s.setReady)
 
   const z = useZ()
 
@@ -142,9 +123,9 @@ const RO = (props: { onReady: () => void; parcoursId: string }) => {
 
   useEffect(() => {
     if (type === "complete") {
-      props.onReady()
+      setReady(true)
     }
-  }, [type, props])
+  }, [type, setReady])
 
   const onNodeDrag = useCallback<OnNodeDrag<AppNode>>((_event, node) => {
     if (node.type !== "ro-sign") {
