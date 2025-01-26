@@ -19,183 +19,217 @@
   "schema": {
     "version": 1,
     "tables": {
-      "parcours": {
-        "tableName": "parcours",
-        "primaryKey": [
-          "id"
-        ],
+      "users": {
+        "name": "users",
         "columns": {
-          "createdAt": {
-            "type": "number",
-            "optional": true
-          },
-          "description": {
-            "type": "string",
-            "optional": false
-          },
           "id": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
           },
-          "ownerId": {
+          "name": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
+          },
+          "email": {
+            "type": "string",
+            "optional": false,
+            "customType": null
+          }
+        },
+        "primaryKey": [
+          "id"
+        ]
+      },
+      "parcours": {
+        "name": "parcours",
+        "columns": {
+          "id": {
+            "type": "string",
+            "optional": false,
+            "customType": null
           },
           "title": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
+          },
+          "description": {
+            "type": "string",
+            "optional": false,
+            "customType": null
+          },
+          "ownerId": {
+            "type": "string",
+            "optional": false,
+            "customType": null
+          },
+          "createdAt": {
+            "type": "number",
+            "optional": true,
+            "customType": null
           },
           "updatedAt": {
             "type": "number",
-            "optional": true
+            "optional": true,
+            "customType": null
           }
         },
-        "relationships": {
-          "edges": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "parcoursId"
-            ],
-            "destSchema": "parcoursEdges"
-          },
-          "nodes": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "parcoursId"
-            ],
-            "destSchema": "parcoursNodes"
-          }
-        }
-      },
-      "parcoursEdges": {
-        "tableName": "parcoursEdges",
         "primaryKey": [
           "id"
-        ],
+        ]
+      },
+      "signsVdh": {
+        "name": "signsVdh",
         "columns": {
           "id": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
           },
-          "parcoursId": {
+          "nr": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
           },
-          "sourceNodeId": {
+          "name": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
           },
-          "targetNodeId": {
+          "description": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
+          },
+          "type": {
+            "type": "string",
+            "optional": false,
+            "customType": null
+          },
+          "isSenior": {
+            "type": "boolean",
+            "optional": false,
+            "customType": null
+          },
+          "inFront": {
+            "type": "boolean",
+            "optional": false,
+            "customType": null
           }
         },
-        "relationships": {}
+        "primaryKey": [
+          "id"
+        ]
       },
       "parcoursNodes": {
-        "tableName": "parcoursNodes",
-        "primaryKey": [
-          "id"
-        ],
+        "name": "parcoursNodes",
         "columns": {
           "id": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
           },
           "parcoursId": {
             "type": "string",
-            "optional": false
-          },
-          "positionX": {
-            "type": "number",
-            "optional": false
-          },
-          "positionY": {
-            "type": "number",
-            "optional": false
-          },
-          "rotation": {
-            "type": "number",
-            "optional": false
+            "optional": false,
+            "customType": null
           },
           "signVdhId": {
             "type": "string",
-            "optional": false
+            "optional": false,
+            "customType": null
+          },
+          "positionX": {
+            "type": "number",
+            "optional": false,
+            "customType": null
+          },
+          "positionY": {
+            "type": "number",
+            "optional": false,
+            "customType": null
+          },
+          "rotation": {
+            "type": "number",
+            "optional": false,
+            "customType": null
           }
         },
-        "relationships": {
-          "sign": {
+        "primaryKey": [
+          "id"
+        ]
+      },
+      "parcoursEdges": {
+        "name": "parcoursEdges",
+        "columns": {
+          "id": {
+            "type": "string",
+            "optional": false,
+            "customType": null
+          },
+          "parcoursId": {
+            "type": "string",
+            "optional": false,
+            "customType": null
+          },
+          "sourceNodeId": {
+            "type": "string",
+            "optional": false,
+            "customType": null
+          },
+          "targetNodeId": {
+            "type": "string",
+            "optional": false,
+            "customType": null
+          }
+        },
+        "primaryKey": [
+          "id"
+        ]
+      }
+    },
+    "relationships": {
+      "parcours": {
+        "nodes": [
+          {
+            "sourceField": [
+              "id"
+            ],
+            "destField": [
+              "parcoursId"
+            ],
+            "destSchema": "parcoursNodes",
+            "cardinality": "many"
+          }
+        ],
+        "edges": [
+          {
+            "sourceField": [
+              "id"
+            ],
+            "destField": [
+              "parcoursId"
+            ],
+            "destSchema": "parcoursEdges",
+            "cardinality": "many"
+          }
+        ]
+      },
+      "parcoursNodes": {
+        "sign": [
+          {
             "sourceField": [
               "signVdhId"
             ],
             "destField": [
               "id"
             ],
-            "destSchema": "signsVdh"
+            "destSchema": "signsVdh",
+            "cardinality": "one"
           }
-        }
-      },
-      "signsVdh": {
-        "tableName": "signsVdh",
-        "primaryKey": [
-          "id"
-        ],
-        "columns": {
-          "description": {
-            "type": "string",
-            "optional": false
-          },
-          "id": {
-            "type": "string",
-            "optional": false
-          },
-          "inFront": {
-            "type": "boolean",
-            "optional": false
-          },
-          "isSenior": {
-            "type": "boolean",
-            "optional": false
-          },
-          "name": {
-            "type": "string",
-            "optional": false
-          },
-          "nr": {
-            "type": "string",
-            "optional": false
-          },
-          "type": {
-            "type": "string",
-            "optional": false
-          }
-        },
-        "relationships": {}
-      },
-      "users": {
-        "tableName": "users",
-        "primaryKey": [
-          "id"
-        ],
-        "columns": {
-          "email": {
-            "type": "string",
-            "optional": false
-          },
-          "id": {
-            "type": "string",
-            "optional": false
-          },
-          "name": {
-            "type": "string",
-            "optional": false
-          }
-        },
-        "relationships": {}
+        ]
       }
     }
   }

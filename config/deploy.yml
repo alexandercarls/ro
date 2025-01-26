@@ -30,7 +30,7 @@ env:
 
 accessories:
   zero:
-    image: rocicorp/zero:0.10.2024122404-fdc0c8
+    image: rocicorp/zero:0.12.2025012501-3203d0
     roles:
       - web
     env:

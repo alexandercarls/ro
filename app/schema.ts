@@ -7,121 +7,105 @@
 
 import {
   ANYONE_CAN,
+  boolean,
   createSchema,
-  createTableSchema,
   definePermissions,
+  number,
+  relationships,
+  string,
+  table,
   type Row
 } from "@rocicorp/zero"
 
-const usersTable = createTableSchema({
-  tableName: "users",
-  columns: {
-    id: "string",
-    name: "string",
-    email: "string"
-  },
-  primaryKey: "id"
-})
+const usersTable = table("users")
+  .columns({
+    id: string(),
+    name: string(),
+    email: string()
+  })
+  .primaryKey("id")
 
-const parcoursTable = createTableSchema({
-  tableName: "parcours",
-  columns: {
-    id: "string",
-    title: "string",
-    description: "string",
-    ownerId: "string",
-    createdAt: { type: "number", optional: true },
-    updatedAt: { type: "number", optional: true }
-  },
-  primaryKey: "id",
-  relationships: {
-    nodes: {
-      sourceField: "id",
-      destField: "parcoursId",
-      destSchema: () => parcoursNodesTable
-    },
-    edges: {
-      sourceField: "id",
-      destField: "parcoursId",
-      destSchema: () => parcoursEdgesTable
-    }
-    //   signs: [
-    //     {
-    //       sourceField: "id",
-    //       destField: "parcoursId",
-    //       destSchema: () => parcoursNodesTable
-    //     },
-    //     {
-    //       sourceField: "signVdhId",
-    //       destField: "id",
-    //       destSchema: () => signsVdhTable
-    //     }
-    //   ]
-  }
-})
+const parcoursTable = table("parcours")
+  .columns({
+    id: string(),
+    title: string(),
+    description: string(),
+    ownerId: string(),
+    createdAt: number().optional(),
+    updatedAt: number().optional()
+  })
+  .primaryKey("id")
 
-const signsVdhTable = createTableSchema({
-  tableName: "signsVdh",
-  columns: {
-    id: "string",
-    nr: "string",
-    name: "string",
-    description: "string",
-    type: "string",
-    isSenior: "boolean",
-    inFront: "boolean"
-  },
-  primaryKey: "id"
-})
+const signsVdhTable = table("signsVdh")
+  .columns({
+    id: string(),
+    nr: string(),
+    name: string(),
+    description: string(),
+    type: string(),
+    isSenior: boolean(),
+    inFront: boolean()
+  })
+  .primaryKey("id")
 
-const parcoursNodesTable = createTableSchema({
-  tableName: "parcoursNodes",
-  columns: {
-    id: "string",
-    parcoursId: "string",
-    signVdhId: "string",
-    positionX: "number",
-    positionY: "number",
-    rotation: "number"
-  },
-  primaryKey: "id",
-  relationships: {
-    sign: {
-      sourceField: "signVdhId",
-      destField: "id",
-      destSchema: () => signsVdhTable
-    }
-  }
-})
+const parcoursNodesTable = table("parcoursNodes")
+  .columns({
+    id: string(),
+    parcoursId: string(),
+    signVdhId: string(),
+    positionX: number(),
+    positionY: number(),
+    rotation: number()
+  })
+  .primaryKey("id")
 
-const parcoursEdgesTable = createTableSchema({
-  tableName: "parcoursEdges",
-  columns: {
-    id: "string",
-    parcoursId: "string",
-    sourceNodeId: "string",
-    targetNodeId: "string"
-  },
-  primaryKey: "id"
-})
+const parcoursEdgesTable = table("parcoursEdges")
+  .columns({
+    id: string(),
+    parcoursId: string(),
+    sourceNodeId: string(),
+    targetNodeId: string()
+  })
+  .primaryKey("id")
 
-export const schema = createSchema({
-  version: 1,
-  tables: {
-    users: usersTable,
-    parcours: parcoursTable,
-    signsVdh: signsVdhTable,
-    parcoursNodes: parcoursNodesTable,
-    parcoursEdges: parcoursEdgesTable
-  }
+const parcoursNodesRelationships = relationships(parcoursNodesTable, ({ one }) => ({
+  sign: one({
+    sourceField: ["signVdhId"],
+    destField: ["id"],
+    destSchema: signsVdhTable
+  })
+}))
+
+const parcoursRelationships = relationships(parcoursTable, ({ many }) => ({
+  nodes: many({
+    sourceField: ["id"],
+    destField: ["parcoursId"],
+    destSchema: parcoursNodesTable
+  }),
+  edges: many({
+    sourceField: ["id"],
+    destField: ["parcoursId"],
+    destSchema: parcoursEdgesTable
+  })
+}))
+
+export const schema = createSchema(1, {
+  tables: [
+    usersTable,
+    parcoursTable,
+    signsVdhTable,
+    parcoursNodesTable,
+    parcoursEdgesTable
+  ],
+  relationships: [parcoursRelationships, parcoursNodesRelationships]
 })
 
 export type Schema = typeof schema
-export type User = Row<typeof usersTable>
-export type Parcours = Row<typeof parcoursTable>
-export type SignsVdh = Row<typeof signsVdhTable>
-export type ParcoursNodes = Row<typeof parcoursNodesTable>
-export type ParcoursEdges = Row<typeof parcoursEdgesTable>
+export type User = Row<typeof schema.tables.users>
+export type Parcours = Row<typeof schema.tables.parcours>
+export type SignsVdh = Row<typeof schema.tables.signsVdh>
+export type ParcoursNodes = Row<typeof schema.tables.parcoursNodes>
+export type ParcoursEdges = Row<typeof schema.tables.parcoursEdges>
 
 type AuthData = {
   sub: string | null
