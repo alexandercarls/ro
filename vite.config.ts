@@ -1,6 +1,5 @@
 import { reactRouter } from "@react-router/dev/vite"
-import autoprefixer from "autoprefixer"
-import tailwindcss from "tailwindcss"
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
 import babel from "vite-plugin-babel"
@@ -14,11 +13,6 @@ export default defineConfig({
       target: "es2022"
     }
   },
-  css: {
-    postcss: {
-      plugins: [tailwindcss, autoprefixer]
-    }
-  },
   plugins: [
     // Run the react-compiler on .tsx files
     babel({
@@ -28,6 +22,7 @@ export default defineConfig({
         plugins: ["babel-plugin-react-compiler"]
       }
     }),
+    tailwindcss(),
     reactRouter(),
     tsconfigPaths()
   ]

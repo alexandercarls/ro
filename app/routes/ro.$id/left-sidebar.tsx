@@ -53,7 +53,7 @@ export const LeftSidebar: FC = () => {
               <NavLink
                 to={parcours.id}
                 key={parcours.id}
-                className="flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground [&[aria-current='page']]:bg-sidebar-selected-background [&[aria-current='page']]:text-sidebar-selected-foreground"
+                className="flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground aria-[current='page']:bg-sidebar-selected-background aria-[current='page']:text-sidebar-selected-foreground"
               >
                 <div className="flex w-full items-center gap-2">
                   <Tooltip>

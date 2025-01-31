@@ -8,7 +8,6 @@ import {
   useMatch
 } from "react-router"
 import type { Route } from "./+types/root"
-import stylesheet from "./app.css?url"
 import { Zero } from "@rocicorp/zero"
 import { schema } from "./schema"
 import { ZeroProvider } from "@rocicorp/zero/react"
@@ -16,8 +15,7 @@ import posthog from "posthog-js"
 import { useEffect } from "react"
 import { create } from "zustand"
 import { PreloadProvider } from "./routes/ro/preload-store"
-
-export const links: Route.LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }]
+import "./app.css";
 
 export function Layout(props: { children: React.ReactNode }) {
   return (

@@ -20,7 +20,7 @@ export type RoSignNodeProps = Node<
   "ro-sign"
 >
 
-const handleClasses = cn("!w-2 !h-2 !bg-green-500 hover:!bg-green-800")
+const handleClasses = cn("w-2! h-2! bg-green-500! hover:bg-green-800!")
 
 export const RoSignNode = (props: NodeProps<RoSignNodeProps>) => {
   const { updateNodeData } = useReactFlow()
@@ -68,7 +68,7 @@ export const RoSignNode = (props: NodeProps<RoSignNodeProps>) => {
           isConnectableEnd={false}
           className={cn(
             handleClasses,
-            position === Position.Left ? "!-left-3" : "!-bottom-3"
+            position === Position.Left ? "-left-3!" : "-bottom-3!"
           )}
           position={position}
         />
@@ -78,7 +78,7 @@ export const RoSignNode = (props: NodeProps<RoSignNodeProps>) => {
           isConnectableEnd={true}
           className={cn(
             handleClasses,
-            position === Position.Left ? "!-left-3" : "!-bottom-3"
+            position === Position.Left ? "-left-3!" : "-bottom-3!"
           )}
           position={position}
         />

@@ -8,7 +8,7 @@ export type RoSignGroupNodeProps = Node<
   "ro-sign-group"
 >
 
-// const handleClasses = cn("!w-2 !h-2 !bg-green-500 hover:!bg-green-800");
+// const handleClasses = cn("w-2! h-2! bg-green-500! hover:bg-green-800!");
 
 export const RoSignGroupNode = (props: NodeProps<RoSignGroupNodeProps>) => {
   // const position = Position.Bottom;
